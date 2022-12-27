@@ -1,0 +1,136 @@
+﻿@model Form_Validation_using_Javascript.Models.StudentViewModel;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <form id="student-form">
+        <label asp-for="Name"></label>
+        <input asp-for="Name"/>
+        <span class="Name" style="color: red;">Please fill this field.</span>
+        <br />
+        <label asp-for="SchoolName"></label>
+        <input asp-for="SchoolName" />
+        <span class="SchoolName" style="color: red;">Please fill this field.</span>
+        <br />
+        <label asp-for="CollegeName"></label>
+        <input asp-for="CollegeName" />
+        <span class="CollegeName" style="color: red;">Please fill this field.</span>
+        <br />
+        <label asp-for="BloodGroup"></label>
+        <input asp-for="BloodGroup" />
+        <span class="BloodGroup" style="color: red;">Please fill this field.</span>
+        <br />
+        <label asp-for="MedicalIssues"></label>
+        <input asp-for="MedicalIssues" />
+        <span class="MedicalIssues" style="color: red;">Please fill this field.</span>
+        <br />
+        <button type="button" onclick="ValidateForm()">Submit Form</button>
+    </form>
+</div>
+
+<div class="student-record">
+
+</div>
+
+<script>
+
+    window.onload = (event) => {
+        document.querySelector('.Name').style.display = "none";
+        document.querySelector('.SchoolName').style.display = "none";
+        document.querySelector('.CollegeName').style.display = "none";
+        document.querySelector('.BloodGroup').style.display = "none";
+        document.querySelector('.MedicalIssues').style.display = "none";
+    };
+
+    function ValidateForm()
+    {
+        var Name = document.getElementById('Name').value;
+        var SchoolName = document.getElementById('SchoolName').value;
+        var CollegeName = document.getElementById('CollegeName').value;
+        var BloodGroup = document.getElementById('BloodGroup').value;
+        var MedicalIssues = document.getElementById('MedicalIssues').value;
+        var flag = false;
+        if(Name == '')
+        {
+            document.querySelector('.Name').style.display = 'block'
+            flag = true;
+
+        }else {
+            document.querySelector('.Name').style.display = 'none'
+
+        }
+
+        if (SchoolName == '') {
+            document.querySelector('.SchoolName').style.display = 'block'
+            flag = true;
+
+        } else {
+            document.querySelector('.SchoolName').style.display = 'none'
+
+        }
+
+        if (CollegeName == '') {
+            document.querySelector('.CollegeName').style.display = 'block'
+            flag = true;
+
+        } else {
+            document.querySelector('.CollegeName').style.display = 'none'
+
+        }
+
+        if (BloodGroup == '') {
+            document.querySelector('.BloodGroup').style.display = 'block'
+            flag = true;
+
+        } else {
+            document.querySelector('.BloodGroup').style.display = 'none'
+
+        }
+
+        if (MedicalIssues == '') {
+            document.querySelector('.MedicalIssues').style.display = 'block'
+            flag = true;
+
+        } else {
+            document.querySelector('.MedicalIssues').style.display = 'none'
+
+        }
+
+        if(flag) return;
+
+        AddStudent()
+    }
+
+    //Task
+    async function AddStudent() {
+        debugger;
+        var formData = new FormData(document.getElementById('student-form'));
+        try {
+            const response = await fetch("/Home/AddStudent",
+                {
+                    method: 'POST',
+                    body: formData
+                });
+            const responseJson = await response.json();
+            const responseData = await responseJson;
+            //debugger;
+            if (response.ok == true)  //Writing C# code inside javascript.
+            {
+                alert("student created successfully...");
+                insertDataInDiv(responseData);
+                return true;
+            }
+        }
+        catch (error) {
+            console.error('Error:', error);
+        }
+        return false;
+    }
+
+    function insertDataInDiv(formData)
+    {
+        debugger;
+    }
+
+</script>
